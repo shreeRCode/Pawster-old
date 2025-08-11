@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-Clone Feed</title>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!--Navigation header-->
+    <header class="nav-bar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Pawster</h2>
+            </div>
+            <div class="nav-search">
+                <input type="text" placeholder="Search" class="search-input">
+             </div>
+             <div class="nav-icons">
+                <a href="feed.html" class="nav-icon active">🏠</a>
+                <a href="#" class="nav-icon">💬</a>
+                <a href="#" class="nav-icon">❤️</a>
+                <a href="profile.html" class="nav-icon">👤</a>
+                
+             </div>
+        </div>
+    </header>
+    <!--Main Content-->
+    <main class="main-content">
+     <div class="feed-container">
+        <!--Stories section-->
+        <div class="stories-section">
+            <div class="stories-container">
+                <div class="story-item">
+                    <div class="story-avatar">
+                        <img src="images/default-avatar.png" alt="Your Story">
+                    </div>
+                    <span class="story-username">Your Story</span>
+                </div>
+            </div>
+        </div>
+        <!--Posts Section-->
+        <div class="posts-section" id="postsContainer">
+            <!--Sample Post Structure-->
+            <article class="post">
+                <div class="post-header">
+                    <div class="post-header">
+                        <div class="post-user-info">
+                            <img src="images/default-avatar.png" alt="User" class="post-avatar">
+                            <div class="post-user-details">
+                                <span class="post-username">username</span>
+                                <span class="post-location">Location</span>
+                            </div>
+                        </div>
+                        <button class="post-options">...</button>
+                    </div>
+                    <div class="post-image">
+                        <img src="images/sample-post.jpg" alt="post">
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <button class="action-btn like-btn">❤️</button>
+                             <button class="action-btn comment-btn">💬</button>
+                              <button class="action-btn share-btn">📤</button>
+                        </div>
+                         <button class="action-btn save-btn">🎁</button>
+                    </div>
+                    <div class="post-info">
+                        <div class="post-likes">
+                            <span>0 likes</span>
+                        </div>
+                        <div class="post-caption">
+                            <span class="caption-username">username</span>
+                            <span class="caption-text">This is a sample text...</span>
+                        </div>
+                        <div class="post-comments">
+                            <span class="view-comments">View all comments</span>
+                        </div>
+                        <div class="post-time">
+                            <span>2 hours ago</span>
+                        </div>
+                    </div>
+                    <div class="post-comment-form">
+                        <input type="text" placeholder="Add a comment..." class="comment-input">
+                        <button class="comment-submit">Post</button>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+     </div> 
+     <!--Side bar (for larger screens)-->
+     <aside class="sidebar">
+        <div class="user-profile-card">
+            <img src="images/default-avatar.png" alt="Your Profile" class="profile-pic">
+            <div class="profile-info">
+                <span class="profile-username">uour_username</span>
+                <span class="profile-name">Your Name</span>
+            </div>
+        </div>
+        <div class="suggestions-section">
+            <h3>Suggestions for you</h3>
+        </div>
+     </aside>
+    </main>
+    <script  type="module" src="js/feed.js"></script>
+    
+</body>
+</html>
