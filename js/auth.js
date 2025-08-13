@@ -50,5 +50,18 @@ document.addEventListener('DOMContentLoaded',function(){
             .catch((error)=>alert("Oops!!login failed"));
         })
     }
-    
+    window.signInWithGoogle=function()
+    {
+        const provider=new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then((result)=>
+        {
+            const user=result.user;
+            console.log("Google user logged in:",user);
+            window.location.href="feed.html";
+        })
+        .catch((error)=>
+        {
+            alert("Google Sign-In failed:"+error.message);
+        })
+    }
 })
