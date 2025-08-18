@@ -160,7 +160,7 @@ body {
     font-weight: 500;
     transition: box-shadow .2s;
 }
-.google-sign-in-button: :hover
+.google-sign-in-button :hover
 {
     box-shadow: 0 2px 4px rgba(60,64,67,.3);
 }
@@ -286,6 +286,83 @@ text-decoration: none;
     top: 84px;
     height: fit-content;
 }
+/* Sidebar user profile card */
+.user-profile-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-profile-card .profile-pic {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 14px;
+}
+
+.user-profile-card .profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile-card .profile-username {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.user-profile-card .profile-name {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Suggestions block */
+.suggestions-section {
+  margin-top: 20px;
+}
+
+.suggestions-section h3 {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* Make suggested accounts list style */
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.suggestion-item .left {
+  display: flex;
+  align-items: center;
+}
+
+.suggestion-item img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.suggestion-item .username {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.suggestion-item .follow-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--link-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .stories-section
 {
     background: var(--white);
@@ -479,6 +556,154 @@ margin-top: 44px;
     font-weight: 300;
     color: var(--text-color);
 }
+.post
+{
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 24px;
+    max-width: 100%;
+    overflow: hidden;
+}
+.post-header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+}
+.post-user-info
+{
+    display: flex;
+    align-items: center;
+}
+.post-user-details
+{
+    display: flex;
+    flex-direction: column;
+}
+.post-avatar
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+.post-image{
+    width: 100%;
+    background: #000;
+}
+.post-image img
+{
+    display: block;
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+.post-actions
+{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 14px;
+}
+.post-actions-left button,
+.save-btn
+{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+.post-info
+{
+    padding: 0 14px 14px;
+}
+.post-caption
+{
+    margin-top: 4px;
+}
+.post-time
+{
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+.post-comment-form
+{
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    padding: 8px 14px;
+}
+.comment-input
+{
+    border: none;
+    flex: 1;
+    padding: 14px;
+    font-size: 14px;
+}
+.comment-input:focus{
+    outline: none;
+}
+.comment-submit
+{
+    background: none;
+    border: none;
+    padding: 0 14px;
+    font-weight: 600;
+    color: var(--link-color);
+    cursor: pointer;
+}
+.upload-section
+{
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    max-width: 614px;
+    margin: 0 auto 24px auto;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.upload-section input[type="file"]
+{
+    flex: 0 0 35%;
+}
+.upload-section input[type="text"]
+{
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    outline: none;
+}
+.upload-section input[type="text"]:focus{
+    border-color: var(--link-color);
+}
+#uploadBtn
+{
+    background: var(--link-color);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+#uploadBtn:hover
+{
+    background: #1877f2;
+}
+
+
+
+
+
 /*Responsive design*/
 @media (max-width: 768px){
     .main-content{
@@ -511,6 +736,10 @@ margin-top: 44px;
     {
         grid-template-columns: repeat(3,1fr);
         gap: 3px;
+    }
+    .post-image img
+    {
+        max-height: 400px;
     }
 }
 @media(max-width: 480px)

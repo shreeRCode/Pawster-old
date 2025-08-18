@@ -41,12 +41,18 @@
                 </div>
             </div>
         </div>
+        <!--Upload Section-->
+        <section class="upload-section">
+            <input type="file" id="imageInput" accept="image/*"/>
+            <input type="text" id="captionInput" placeholder="Write a caption..." />
+            <button id="uploadBtn">Upload Post</button>
+        </section>
         <!--Posts Section-->
         <div class="posts-section" id="postsContainer">
             <!--Sample Post Structure-->
-            <article class="post">
+            <!-- <article class="post"> -->
                 <div class="post-header">
-                    <div class="post-header">
+                   
                         <div class="post-user-info">
                             <img src="images/default-avatar.png" alt="User" class="post-avatar">
                             <div class="post-user-details">
@@ -55,10 +61,12 @@
                             </div>
                         </div>
                         <button class="post-options">...</button>
-                    </div>
-                    <div class="post-image">
-                        <img src="images/sample-post.jpg" alt="post">
-                    </div>
+                        </div>
+                          <div class="post-image">
+    <img src="images/sample-post.jpg" alt="post">
+  </div>
+                    
+                    
                     <div class="post-actions">
                         <div class="post-actions-left">
                             <button class="action-btn like-btn">❤️</button>
@@ -88,7 +96,8 @@
                     </div>
 
                 </div>
-            </article>
+
+            <!-- </article> -->
         </div>
      </div> 
      <!--Side bar (for larger screens)-->
@@ -96,14 +105,40 @@
         <div class="user-profile-card">
             <img src="images/default-avatar.png" alt="Your Profile" class="profile-pic">
             <div class="profile-info">
-                <span class="profile-username">uour_username</span>
+                <span class="profile-username">your_username</span>
                 <span class="profile-name">Your Name</span>
             </div>
         </div>
         <div class="suggestions-section">
             <h3>Suggestions for you</h3>
+        <div class="suggestion-item">
+            <div class="left">
+                <img src="images/default-avatar.png" alt="User">
+        <span class="username">user1</span>
+
+            </div>
+              <button class="follow-btn">Follow</button>
+
         </div>
-     </aside>
+        
+    <div class="suggestion-item">
+      <div class="left">
+        <img src="images/default-avatar.png" alt="User">
+        <span class="username">user2</span>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+    
+    <div class="suggestion-item">
+      <div class="left">
+        <img src="images/default-avatar.png" alt="User">
+        <span class="username">user3</span>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+    </div>
+    </aside>
+     
     </main>
     <script  type="module" src="js/feed.js"></script>
     
