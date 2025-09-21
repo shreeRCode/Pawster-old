@@ -6,6 +6,9 @@
     <title>Instagram-Clone Feed</title>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
 <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -42,11 +45,24 @@
             </div>
         </div>
         <!--Upload Section-->
-        <section class="upload-section">
-            <input type="file" id="imageInput" accept="image/*"/>
-            <input type="text" id="captionInput" placeholder="Write a caption..." />
-            <button id="uploadBtn">Upload Post</button>
-        </section>
+       <section class="upload-section">
+    <div class="file-input-container">
+        <input type="file" id="imageInput" accept="image/*" style="display: none;"/>
+        <label for="imageInput" class="file-select-btn">Choose Image</label>
+        <span id="fileName" class="file-name" style="display: none; cursor: pointer; color: #007bff; text-decoration: underline;">No file selected</span>
+    </div>
+    <input type="text" id="captionInput" placeholder="Write a caption..." />
+    <button id="uploadBtn">Upload Post</button>
+    
+    <!-- Preview modal/popup -->
+    <div id="imagePreviewModal" class="preview-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" id="closePreview">&times;</span>
+            <img id="imagePreview" style="max-width: 100%; max-height: 80vh;"/>
+        </div>
+    </div>
+</section>
+
         <!--Posts Section-->
         <div class="posts-section" id="postsContainer">
             <!--Sample Post Structure-->
@@ -63,7 +79,7 @@
                         <button class="post-options">...</button>
                         </div>
                           <div class="post-image">
-    <img src="images/sample-post.jpg" alt="post">
+    <img src="xx" alt="post">
   </div>
                     
                     
