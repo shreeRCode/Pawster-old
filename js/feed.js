@@ -1,10 +1,25 @@
+let model = null;
+let modelReady = false;
+
+async function loadModel() {
+  model = await mobilenet.load();
+  modelReady = true;
+  console.log("MobileNet model loaded and ready.");
+  // Enable upload button here if you disabled it initially:
+  document.getElementById("uploadBtn").disabled = false;
+}
+
+// Start loading immediately after script runs
+loadModel();
+
 const imageInput = document.getElementById("imageInput");
 const fileName = document.getElementById("fileName");
 const imagePreview = document.getElementById("imagePreview");
 const previewModal = document.getElementById("imagePreviewModal");
 const closePreview = document.getElementById("closePreview");
 const uploadBtn = document.getElementById("uploadBtn");
-let model;
+const captionInput = document.getElementById("captionInput");
+
 const dogLabels = [
   "Labrador retriever",
   "Golden retriever",
@@ -28,15 +43,6 @@ const dogLabels = [
   "Saint Bernard",
 ];
 let isValidDogImage = false;
-async function loadModel() {
-  try {
-    model = await mobilenet.load();
-    console.log("Mobilenet loaded successfully");
-  } catch (error) {
-    console.error("Failed to load model:", error);
-    alert("AI model failed to load. Dog detection won't work.");
-  }
-}
 function isDog(predictions) {
   return predictions.some(
     (prediction) =>
@@ -75,15 +81,193 @@ imageInput.addEventListener("change", function (e) {
     const file = e.target.files[0];
     fileName.textContent = file.name;
     fileName.style.display = "inline";
+    //Show loading message
+    fileName.textContent = "🔄 Analyzing image...";
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Checking Image...";
+    //Read and preview the image
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = async function (e) {
       imagePreview.src = e.target.result;
+      //Wait a bit for image to load,then classify
+      setTimeout(async () => {
+        isValidDogImage = await classifyAndValidateImage(imagePreview);
+        if (isValidDogImage) {
+          fileName.textContent = `✅ ${file.name} (Dog detected!)`;
+          fileName.style.color = "#28a745";
+          uploadBtn.disabled = false;
+          uploadBtn.textContent = "Upload Post";
+        } else {
+          fileName.textContent = `❌ ${file.name} (Not a dog)`;
+          fileName.style.color = "#dc3545"; // Red color
+          uploadBtn.disabled = true;
+          uploadBtn.textContent = "Upload Blocked";
+          // Clear the file input
+          imageInput.value = "";
+        }
+      }, 500);
     };
     reader.readAsDataURL(file);
   } else {
     fileName.style.display = "none";
+    isValidDogImage = false;
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "Upload Post";
   }
 });
+uploadBtn.addEventListener("click", async function (e) {
+  if (!currentUser) {
+    alert("Please log in to upload posts!");
+    return;
+  }
+  if (!isValidDogImage && imageInput.files.length > 0) {
+    e.preventDefault();
+    alert("Cannot upload: Please select an image containing a dog!");
+    return false;
+  }
+  if (imageInput.files.length === 0) {
+    alert("Please select an image!");
+    return;
+  }
+  const captionInput = document.getElementById("captionInput");
+
+  if (!captionInput.value.trim()) {
+    alert("Please add a caption!");
+    return;
+  }
+  try {
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Uploading...";
+    const file = imageInput.files[0];
+    const storageRef = firebase
+      .storage()
+      .ref("post_images/" + Date.now() + "_" + file.name);
+    const snapshot = await storageRef.put(file);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    // 3. Save to Firestore (v8 compat syntax)
+    await firebase
+      .firestore()
+      .firestore()
+      .collection("posts")
+      .add({
+        imageUrl: downloadURL,
+        caption: captionInput.value.trim(),
+        username: currentUser.displayName || currentUser.email || "Anonymous",
+        userId: currentUser.uid,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        likes: 0,
+        comments: [],
+      });
+    alert("Post uploaded successfully");
+    //Reset form
+    imageInput.value = "";
+    captionInput.value = "";
+    fileName.style.display = "none";
+    isValidDogImage = false;
+    loadPosts();
+  } catch (error) {
+    console.error("Error uploading post:", error);
+    alert("Error uploading post:", error.message);
+  } finally {
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "Upload Post";
+  }
+});
+//load posts function
+async function loadPosts() {
+  try {
+    const querySnapshot = await firebase
+      .firestore()
+      .collection("posts")
+      .orderBy("createdAt", "desc")
+      .get();
+    const postsContainer = document.getElementById("postsContainer");
+    //clear existing dynamic posts
+    const existingPosts = postsContainer.querySelectorAll(".dynamic-post");
+    existingPosts.forEach((post) => post.remove());
+    //Create new posts from Firebase data
+    querySnapshot.forEach((doc) => {
+      const post = doc.data;
+      const postElement = createPostElement(post, doc.id);
+      postsContainer.appendChild(postElement);
+    });
+  } catch (error) {
+    console.error("Error loading posts:", error);
+  }
+}
+//This function converts Firebase data into HTML elements
+function createPostElement(post, postId) {
+  const postDiv = document.createElement("article");
+  postDiv.className = "post dynamic-post";
+  postDiv.innerHTML = `
+  <div class="post-header">
+    <div class="post-user-info">
+        <img src="images/default-avatar.png" alt="User" class="post-avatar">
+            <div class="post-user-details">
+                <span class="post-username">${post.username}</span>
+                  <span class="post-location">${formatTimestamp(
+                    post.createdAt
+                  )}</span>
+            </div>
+    </div>
+      <button class="post-options">...</button>
+  </div>
+  <div class="post-image">
+    <!-- If you want a default sample image -->
+    <img src="${post.imageUrl}" alt="post" loading="lazy">
+
+  </div>
+                    
+                    
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <button class="action-btn like-btn">❤️</button>
+                             <button class="action-btn comment-btn">💬</button>
+                              <button class="action-btn share-btn">📤</button>
+                        </div>
+                         <button class="action-btn save-btn">🎁</button>
+                    </div>
+                    <div class="post-info">
+                        <div class="post-likes">
+                            <span>${post.likes || 0} likes</span>
+                        </div>
+                        <div class="post-caption">
+                            <span class="caption-username">${
+                              post.username
+                            }</span>
+                            <span class="caption-text">${post.caption}</span>
+                        </div>
+                        <div class="post-comments">
+                            <span class="view-comments">View all comments</span>
+                        </div>
+                        <div class="post-time">
+                            <span>${formatTimestamp(post.createdAt)}</span>
+                        </div>
+                    </div>`;
+  return postDiv;
+}
+//Helper function for timestamps
+function formatTimestamp(timestamp) {
+  if (!timestamp) return "Just Now";
+  const date = timestamp.toDate(); // Firebase timestamps have a special .toDate() method that converts to JavaScript Date object
+  const now = new Date();
+  const diffMs = now - date;
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+  if (diffHours < 1) return "Just now";
+  if (diffHours < 24) return `${diffHours} hours ago`;
+  return `${Math.floor(diffHours / 24)} days ago`;
+}
+//call load posts when authentication is ready
+let currentUser = null;
+firebase.auth().onAuthStateChanged((user) => {
+  currentUser = user;
+  if (user) {
+    console.log("User is signed in:", user.displayName || user.email);
+    loadPosts();
+  }
+});
+
 // When user clicks on filename, show preview
 fileName.addEventListener("click", function () {
   if (imagePreview.src) {

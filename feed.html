@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram-Clone Feed</title>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+
 
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -79,7 +83,9 @@
                         <button class="post-options">...</button>
                         </div>
                           <div class="post-image">
-    <img src="xx" alt="post">
+    <!-- If you want a default sample image -->
+<img src="images/default-avatar.png" alt="post">
+
   </div>
                     
                     
@@ -156,7 +162,8 @@
     </aside>
      
     </main>
-    <script  type="module" src="js/feed.js"></script>
+   <script src="js/firebase-config.js"></script>  <!-- Remove type="module" -->
+    <script src="js/feed.js"></script>  
     
 </body>
 </html>
