@@ -260,19 +260,22 @@ function formatTimestamp(timestamp) {
 }
 //call load posts when authentication is ready
 let currentUser = null;
-firebase.auth().onAuthStateChanged((user) => {
-  currentUser = user;
-  if (user) {
-    console.log("User is signed in:", user.displayName || user.email);
-    loadPosts();
-  }
-});
 
 // When user clicks on filename, show preview
 fileName.addEventListener("click", function () {
   if (imagePreview.src) {
     previewModal.style.display = "flex";
   }
+});
+document.addEventListener("DOMContentLoaded", function () {
+  // Wait for Firebase to be ready
+  firebase.auth().onAuthStateChanged((user) => {
+    currentUser = user;
+    if (user) {
+      console.log("User is signed in:", user.displayName || user.email);
+      loadPosts();
+    }
+  });
 });
 // Close preview when clicking X or outside
 closePreview.addEventListener("click", function () {

@@ -24,3 +24,4 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 window.storage = storage;
 window.db = db;
+console.log("Firebase initialized successfully!");
